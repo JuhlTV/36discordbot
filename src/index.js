@@ -151,9 +151,25 @@ async function syncMemberNickname(member) {
 }
 
 async function syncAllMembers(guild) {
-  await guild.members.fetch();
   const tasks = guild.members.cache.map((member) => syncMemberNickname(member));
   await Promise.all(tasks);
+}
+
+function getRetryDelayMsFromError(error) {
+  const message = String(error?.message || "");
+  const match = message.match(/Retry after\s+([0-9.]+)\s+seconds?/i);
+
+  if (!match) {
+    return 30000;
+  }
+
+  const seconds = Number(match[1]);
+  if (Number.isNaN(seconds) || seconds <= 0) {
+    return 30000;
+  }
+
+  // Small buffer to avoid immediately hitting the same limit again.
+  return Math.ceil((seconds + 1) * 1000);
 }
 
 client.once(Events.ClientReady, async (readyClient) => {
@@ -183,6 +199,22 @@ client.once(Events.ClientReady, async (readyClient) => {
       console.warn(
         "ℹ Optional: Aktiviere im Developer Portal Bot → GATEWAY INTENTS → SERVER MEMBERS INTENT für Initial-Sync."
       );
+    } else if (String(error.message).toLowerCase().includes("rate limited")) {
+      const delayMs = getRetryDelayMsFromError(error);
+      console.warn(
+        `Initial-Sync rate-limited. Neuer Versuch in ${Math.ceil(delayMs / 1000)} Sekunden.`
+      );
+
+      setTimeout(async () => {
+        try {
+          await guild.members.fetch();
+          console.log(`Retry-Sync: ${guild.members.cache.size} Member geladen.`);
+          await syncAllMembers(guild);
+          console.log("Retry-Sync abgeschlossen.");
+        } catch (retryError) {
+          console.error("Retry-Sync fehlgeschlagen:", retryError.message);
+        }
+      }, delayMs);
     } else {
       console.error("Fehler beim Initial-Sync:", error.message);
     }
