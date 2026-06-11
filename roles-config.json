@@ -1,0 +1,17 @@
+[
+  {
+    "roleName": "Private",
+    "roleId": "1234567890",
+    "prefix": "PVT"
+  },
+  {
+    "roleName": "Corporal",
+    "roleId": "0987654321",
+    "prefix": "CPL"
+  },
+  {
+    "roleName": "Sergeant",
+    "roleId": "1122334455",
+    "prefix": "SGT"
+  }
+]

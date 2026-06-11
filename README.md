@@ -38,20 +38,44 @@ PREFIX_FALLBACK_STRATEGY=initials
 INCLUDE_MANAGED_ROLES=false
 ```
 
-## ROLE_PREFIXES automatisch generieren
+## Rollen konfigurieren
 
-Wenn du viele Rollen hast, kannst du die `ROLE_PREFIXES` per Script erzeugen:
+Es gibt zwei Möglichkeiten, die Rollen-zu-Prefix-Mappings einzustellen:
 
+### Option 1: Direkt in `roles-config.json` (empfohlen)
+
+Einfach die Datei [roles-config.json](roles-config.json) bearbeiten und deine Rollen mit Namen, IDs und Kürzeln eintragen:
+
+```json
+[
+  {
+    "roleName": "Private",
+    "roleId": "1234567890",
+    "prefix": "PVT"
+  },
+  {
+    "roleName": "Sergeant",
+    "roleId": "0987654321",
+    "prefix": "SGT"
+  }
+]
+```
+
+### Option 2: Auto-Generierung mit Script
+
+Wenn du viele Rollen hast und sie automatisch generieren willst:
+
+1. `.env` mit `DISCORD_TOKEN` und `GUILD_ID` setzen.
+2. Ausführen:
 ```bash
 npm run generate:role-prefixes
 ```
+3. Das Script erzeugt automatisch die `roles-config.json` mit allen Rollen und intelligenten Kürzeln.
 
-Das Script:
-- Liest alle Rollen aus deinem `GUILD_ID`
-- Nimmt bekannte Militär-Ränge mit typischen Kürzeln (z. B. `Private` -> `PVT`, `Corporal` -> `CPL`)
-- Nutzt für unbekannte Rollen einen Fallback (`initials` oder `first3`)
+Die Anwendungspriorität:
+1. Wenn `roles-config.json` existiert → wird geladen
+2. Sonst → fallback auf `ROLE_PREFIXES` aus .env
 
-Danach kopierst du die ausgegebene JSON direkt als Railway-Variable `ROLE_PREFIXES`.
 
 ## Hinweise
 

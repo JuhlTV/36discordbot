@@ -1,5 +1,7 @@
 require("dotenv").config();
 const { Client, GatewayIntentBits } = require("discord.js");
+const fs = require("fs");
+const path = require("path");
 
 const token = process.env.DISCORD_TOKEN;
 const guildId = process.env.GUILD_ID;
@@ -91,16 +93,16 @@ async function main() {
         .sort((a, b) => b.position - a.position)
         .map((role) => ({
           roleName: role.name,
+          roleId: role.id,
           prefix: buildPrefix(role.name),
         }))
         .filter((entry) => entry.prefix.length > 0);
 
-      const json = JSON.stringify(rolePrefixes);
-
-      console.log("ROLE_PREFIXES=");
-      console.log(json);
-      console.log("\nRailway Variable Value (copy only JSON above):");
-      console.log(json);
+      // Datei speichern
+      const configPath = path.join(__dirname, "..", "roles-config.json");
+      fs.writeFileSync(configPath, JSON.stringify(rolePrefixes, null, 2));
+      console.log(`✓ ${rolePrefixes.length} Rollen in roles-config.json gespeichert:`);
+      console.log(JSON.stringify(rolePrefixes, null, 2));
     } catch (error) {
       console.error("Fehler beim Generieren der ROLE_PREFIXES:", error.message);
       process.exitCode = 1;

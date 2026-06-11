@@ -1,5 +1,7 @@
 require("dotenv").config();
 const { Client, GatewayIntentBits, Events } = require("discord.js");
+const fs = require("fs");
+const path = require("path");
 
 const token = process.env.DISCORD_TOKEN;
 const guildId = process.env.GUILD_ID;
@@ -11,14 +13,35 @@ if (!token || !guildId) {
 }
 
 let rolePrefixes;
-try {
-  rolePrefixes = JSON.parse(process.env.ROLE_PREFIXES || "[]");
-  if (!Array.isArray(rolePrefixes)) {
-    throw new Error("ROLE_PREFIXES muss ein JSON-Array sein.");
+const configPath = path.join(__dirname, "..", "roles-config.json");
+
+// Zuerst versuchen, aus roles-config.json zu laden
+if (fs.existsSync(configPath)) {
+  try {
+    const configContent = fs.readFileSync(configPath, "utf-8");
+    rolePrefixes = JSON.parse(configContent);
+    if (!Array.isArray(rolePrefixes)) {
+      throw new Error("roles-config.json muss ein JSON-Array sein.");
+    }
+    console.log(`Rollen-Konfiguration geladen aus roles-config.json (${rolePrefixes.length} Rollen)`);
+  } catch (error) {
+    console.error("Fehler beim Lesen von roles-config.json:", error.message);
+    process.exit(1);
   }
-} catch (error) {
-  console.error("ROLE_PREFIXES konnte nicht gelesen werden:", error.message);
-  process.exit(1);
+} else {
+  // Fallback auf .env ROLE_PREFIXES
+  try {
+    rolePrefixes = JSON.parse(process.env.ROLE_PREFIXES || "[]");
+    if (!Array.isArray(rolePrefixes)) {
+      throw new Error("ROLE_PREFIXES muss ein JSON-Array sein.");
+    }
+    if (rolePrefixes.length > 0) {
+      console.log(`Rollen-Konfiguration geladen aus .env (${rolePrefixes.length} Rollen)`);
+    }
+  } catch (error) {
+    console.error("ROLE_PREFIXES konnte nicht gelesen werden:", error.message);
+    process.exit(1);
+  }
 }
 
 const client = new Client({
