@@ -71,7 +71,26 @@ function getHighestMatchingRolePrefix(member) {
   const sortedRoles = [...memberRoles.values()].sort((a, b) => b.position - a.position);
 
   for (const role of sortedRoles) {
-    const match = rolePrefixes.find((entry) => {
+    // Zuerst nach roleId suchen (exakt)
+    let match = rolePrefixes.find((entry) => {
+      return (
+        entry &&
+        entry.roleId &&
+        entry.roleId === role.id &&
+        typeof entry.prefix === "string" &&
+        entry.prefix.trim().length > 0
+      );
+    });
+
+    if (match) {
+      console.log(
+        `[DEBUG] Rolle ${role.name} (${role.id}) -> Präfix: ${match.prefix} (nach ID gefunden)`
+      );
+      return match.prefix.trim();
+    }
+
+    // Fallback: Nach roleName suchen (weniger genau)
+    match = rolePrefixes.find((entry) => {
       return (
         entry &&
         typeof entry.roleName === "string" &&
@@ -82,10 +101,18 @@ function getHighestMatchingRolePrefix(member) {
     });
 
     if (match) {
+      console.log(
+        `[DEBUG] Rolle ${role.name} (${role.id}) -> Präfix: ${match.prefix} (nach Name gefunden)`
+      );
       return match.prefix.trim();
     }
   }
 
+  console.log(
+    `[DEBUG] Keine Rolle gefunden für Member ${member.user.tag}. Rollen: ${[...memberRoles.values()]
+      .map((r) => `${r.name}(${r.id})`)
+      .join(", ")}`
+  );
   return null;
 }
 
