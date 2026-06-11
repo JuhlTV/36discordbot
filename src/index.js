@@ -119,7 +119,8 @@ function buildNewNickname(member, prefix) {
   const withoutKnownPrefix = existingPrefixRegex ? current.replace(existingPrefixRegex, "") : current;
 
   if (!prefix) {
-    return replaceExistingPrefix ? withoutKnownPrefix : current;
+    // Keine passende Rolle: Namen unverändert lassen.
+    return current;
   }
 
   if (!replaceExistingPrefix && existingPrefixRegex?.test(current)) {
@@ -130,7 +131,14 @@ function buildNewNickname(member, prefix) {
 }
 
 async function syncMemberNickname(member) {
-  if (!member || !member.manageable) {
+  if (!member) {
+    return;
+  }
+
+  if (!member.manageable) {
+    console.log(
+      `Übersprungen (nicht verwaltbar): ${member.user.tag} - meist Server-Owner oder Rolle über Bot.`
+    );
     return;
   }
 
