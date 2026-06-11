@@ -8,10 +8,19 @@ Dieser Bot setzt automatisch ein Rollen-Kürzel vor den Nickname, z. B.:
 
 - Node.js 18+
 - Ein Discord Bot mit den folgenden aktivierten Privileged Gateway Intents im Developer Portal:
-  - `SERVER MEMBERS INTENT`
+  - ✓ `SERVER MEMBERS INTENT` (wichtig!)
+  - ✓ `GUILDS`
 - Bot-Berechtigungen auf deinem Server:
   - `Manage Nicknames`
   - `View Channels`
+
+**Wie man die Intents aktiviert:**
+1. Gehe zu https://discord.com/developers/applications
+2. Wähle deine Anwendung
+3. Klick auf **Bot** (links)
+4. Scrolle zu **GATEWAY INTENTS** (rechts)
+5. Aktiviere `SERVER MEMBERS INTENT` und `GUILDS`
+6. Speichern
 
 ## Installation
 

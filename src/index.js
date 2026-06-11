@@ -45,7 +45,10 @@ if (fs.existsSync(configPath)) {
 }
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers, // Privilegierter Intent – muss im Developer Portal aktiviert sein
+  ],
 });
 
 function escapeRegExp(value) {
