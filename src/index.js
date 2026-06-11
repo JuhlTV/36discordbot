@@ -45,9 +45,7 @@ if (fs.existsSync(configPath)) {
 }
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds],
-  // Hinweis: GuildMembers Intent ist optional. Wenn aktiviert, lädt der Bot alle Rollen beim Start.
-  // Ohne Intent reagiert der Bot nur auf Live-Events (neue Member, Rollenwechsel).
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
 
 function escapeRegExp(value) {
@@ -205,4 +203,14 @@ client.on(Events.GuildMemberUpdate, async (_oldMember, newMember) => {
   await syncMemberNickname(newMember);
 });
 
-client.login(token);
+client.login(token).catch((error) => {
+  if (error?.message?.includes("disallowed intents") || error?.message?.includes("Used disallowed intents")) {
+    console.error(
+      "GuildMembers Intent ist im Discord Developer Portal nicht aktiviert. Aktiviere: Bot -> Gateway Intents -> SERVER MEMBERS INTENT"
+    );
+    process.exit(1);
+  }
+
+  console.error("Login-Fehler:", error.message);
+  process.exit(1);
+});
