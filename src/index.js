@@ -45,10 +45,9 @@ if (fs.existsSync(configPath)) {
 }
 
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers, // Privilegierter Intent – muss im Developer Portal aktiviert sein
-  ],
+  intents: [GatewayIntentBits.Guilds],
+  // Hinweis: GuildMembers Intent ist optional. Wenn aktiviert, lädt der Bot alle Rollen beim Start.
+  // Ohne Intent reagiert der Bot nur auf Live-Events (neue Member, Rollenwechsel).
 });
 
 function escapeRegExp(value) {
@@ -141,9 +140,28 @@ client.once(Events.ClientReady, async (readyClient) => {
     return;
   }
 
-  console.log(`Starte Initial-Sync auf Server: ${guild.name}`);
-  await syncAllMembers(guild);
-  console.log("Initial-Sync abgeschlossen.");
+  console.log(`Verbunden mit Server: ${guild.name}`);
+
+  // Versuche alle Rollen zu synchen, wenn GuildMembers Intent aktiviert ist
+  try {
+    await guild.members.fetch();
+    console.log(`Initial-Sync: ${guild.members.cache.size} Member geladen.`);
+    await syncAllMembers(guild);
+    console.log("Initial-Sync abgeschlossen.");
+  } catch (error) {
+    // Wenn kein GuildMembers Intent, wird hier ein Fehler geworfen
+    // Das ist ok – der Bot reagiert trotzdem auf Live-Events
+    if (error.message.includes("Used disallowed intents")) {
+      console.warn(
+        "⚠ GuildMembers Intent nicht aktiviert. Bot reagiert nur auf Live-Events (neue Member, Rollenwechsel)."
+      );
+      console.warn(
+        "ℹ Optional: Aktiviere im Developer Portal Bot → GATEWAY INTENTS → SERVER MEMBERS INTENT für Initial-Sync."
+      );
+    } else {
+      console.error("Fehler beim Initial-Sync:", error.message);
+    }
+  }
 });
 
 client.on(Events.GuildMemberAdd, async (member) => {

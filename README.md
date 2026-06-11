@@ -7,20 +7,26 @@ Dieser Bot setzt automatisch ein Rollen-Kürzel vor den Nickname, z. B.:
 ## Voraussetzungen
 
 - Node.js 18+
-- Ein Discord Bot mit den folgenden aktivierten Privileged Gateway Intents im Developer Portal:
-  - ✓ `SERVER MEMBERS INTENT` (wichtig!)
-  - ✓ `GUILDS`
+- Ein Discord Bot mit den folgenden aktivierten Privileged Gateway Intents im Developer Portal (optional aber empfohlen):
+  - ✓ `SERVER MEMBERS INTENT` – ermöglicht Initial-Sync aller Rollen beim Bot-Start
+  - ✓ `GUILDS` – erforderlich
 - Bot-Berechtigungen auf deinem Server:
   - `Manage Nicknames`
   - `View Channels`
 
-**Wie man die Intents aktiviert:**
+**Ohne SERVER MEMBERS INTENT:**
+Der Bot funktioniert trotzdem, reagiert aber nur auf Live-Events:
+- Neue Member erhalten automatisch ein Prefix
+- Bei Rollenwechsel wird der Nickname aktualisiert
+- Existierende Member werden nicht beim Start synchronisiert
+
+**Wie man die Intents aktiviert (optional):**
 1. Gehe zu https://discord.com/developers/applications
 2. Wähle deine Anwendung
 3. Klick auf **Bot** (links)
 4. Scrolle zu **GATEWAY INTENTS** (rechts)
 5. Aktiviere `SERVER MEMBERS INTENT` und `GUILDS`
-6. Speichern
+6. Speichern und Bot neustarten
 
 ## Installation
 
