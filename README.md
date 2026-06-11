@@ -34,7 +34,24 @@ DISCORD_TOKEN=dein_bot_token_hier
 GUILD_ID=deine_server_id_hier
 ROLE_PREFIXES=[{"roleName":"Private","prefix":"PVT"},{"roleName":"Corporal","prefix":"CPL"},{"roleName":"Sergeant","prefix":"SGT"}]
 REPLACE_EXISTING_PREFIX=true
+PREFIX_FALLBACK_STRATEGY=initials
+INCLUDE_MANAGED_ROLES=false
 ```
+
+## ROLE_PREFIXES automatisch generieren
+
+Wenn du viele Rollen hast, kannst du die `ROLE_PREFIXES` per Script erzeugen:
+
+```bash
+npm run generate:role-prefixes
+```
+
+Das Script:
+- Liest alle Rollen aus deinem `GUILD_ID`
+- Nimmt bekannte Militär-Ränge mit typischen Kürzeln (z. B. `Private` -> `PVT`, `Corporal` -> `CPL`)
+- Nutzt für unbekannte Rollen einen Fallback (`initials` oder `first3`)
+
+Danach kopierst du die ausgegebene JSON direkt als Railway-Variable `ROLE_PREFIXES`.
 
 ## Hinweise
 

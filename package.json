@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "generate:role-prefixes": "node scripts/generate-role-prefixes.js"
   },
   "engines": {
     "node": ">=18.0.0"
