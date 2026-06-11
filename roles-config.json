@@ -1,17 +1,92 @@
 [
   {
     "roleName": "Private",
-    "roleId": "1234567890",
+    "roleId": "1514613483529044050",
     "prefix": "PVT"
   },
   {
+    "roleName": "Private First Class",
+    "roleId": "1514613483529044051",
+    "prefix": "PFC"
+  },
+  {
+    "roleName": "Specialist",
+    "roleId": "1514613483529044054",
+    "prefix": "SPC"
+  },
+  {
+    "roleName": "Lance Corporal",
+    "roleId": "1514613483529044055",
+    "prefix": "LCPL"
+  },
+  {
     "roleName": "Corporal",
-    "roleId": "0987654321",
+    "roleId": "1514613483529044056",
     "prefix": "CPL"
   },
   {
+    "roleName": "Chief Corporal",
+    "roleId": "1514613483529044057",
+    "prefix": "CCPL"
+  },
+  {
+    "roleName": "First Corporal",
+    "roleId": "1514613483558277302",
+    "prefix": "FCPL"
+  },
+  {
     "roleName": "Sergeant",
-    "roleId": "1122334455",
+    "roleId": "1514613483558277303",
     "prefix": "SGT"
+  },
+  {
+    "roleName": "Master Sergeant",
+    "roleId": "1514613483558277304",
+    "prefix": "MSGT"
+  },
+  {
+    "roleName": "First Sergeant",
+    "roleId": "1514613483558277305",
+    "prefix": "FSGT"
+  },
+  {
+    "roleName": "Sergeant Major",
+    "roleId": "1514613483558277306",
+    "prefix": "SMJ"
+  },
+  {
+    "roleName": "Second Lieutenant",
+    "roleId": "1514613483558277307",
+    "prefix": "2LT"
+  },
+  {
+    "roleName": "First Lieutenant",
+    "roleId": "1514613483558277308",
+    "prefix": "1LT"
+  },
+  {
+    "roleName": "Captain",
+    "roleId": "1514613483558277309",
+    "prefix": "CPT"
+  },
+  {
+    "roleName": "Major",
+    "roleId": "1514613483558277310",
+    "prefix": "MJR"
+  },
+  {
+    "roleName": "Battalion Commander",
+    "roleId": "1514613483558277311",
+    "prefix": "BCMD"
+  },
+  {
+    "roleName": "Regimental Commander",
+    "roleId": "1514613483566530690",
+    "prefix": "RCMD"
+  },
+  {
+    "roleName": "Senior Commander",
+    "roleId": "1514613483566530691",
+    "prefix": "SCMD"
   }
 ]
