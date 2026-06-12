@@ -99,6 +99,33 @@ Die Anwendungspriorität:
 - Wenn `REPLACE_EXISTING_PREFIX=false`, setzt der Bot kein neues Präfix, falls bereits eines vorhanden ist.
 - Der Bot kann Nicknames nur ändern, wenn seine eigene Rolle über der Zielrolle liegt.
 
+## Abmeldungs-System
+
+Der Bot hat jetzt ein erweitertes Abmeldungs-System mit Slash-Commands:
+
+- `/abmelden [spieler] [grund] [kategorie] [bis]`
+  - Markiert dich selbst als abgemeldet.
+  - Mit Option `spieler` kann ein Admin auch andere Spieler abmelden.
+  - `kategorie`: `urlaub`, `krank`, `ooc`, `sonstiges`
+  - `bis`: Enddatum im Format `TT.MM.JJJJ` (optional)
+- `/anmelden [spieler]`
+  - Hebt eine Abmeldung auf (du selbst oder als Admin für andere).
+- `/abmeldungen`
+  - Zeigt nur die aktuelle Liste aller aktiven Abmeldungen.
+- `/rp-uebersicht`
+  - Zeigt alle Spieler mit konfigurierter RP-Rolle als Embed und teilt sie in
+    - `Kann ins RP`
+    - `Abgemeldet`
+  - Optional mit `oeffentlich=true` fuer sichtbare Ausgabe im Channel.
+
+Persistenz:
+- Die Abmeldungen werden in `abmeldungen.json` gespeichert und bleiben nach Neustarts erhalten.
+- Abgelaufene Abmeldungen werden automatisch entfernt.
+
+Berechtigungen:
+- Andere Spieler ab-/anmelden: `Server verwalten` erforderlich.
+- `/abmeldungen` und `/rp-uebersicht`: nur für `Server verwalten`.
+
 ## Railway Deployment
 
 1. Repository auf GitHub pushen.
